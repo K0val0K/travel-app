@@ -1,0 +1,34 @@
+﻿@model List<UserTourBookmark>
+
+@{ 
+    ViewData["Title"] = "All bookmarks";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>List of all your bookmarks</h4>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bookmark ID</th>
+                    <th>Movie ID</th>
+                    <th>Movie Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bookmark in Model)
+                {
+                <tr>
+                    <td class="align-middle">@bookmark.Id</td>
+                    <td class="align-middle">@bookmark.Movie.Name</td>  
+                    <td class="align-middle">@bookmark.Movie.Description</td>  
+                 </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

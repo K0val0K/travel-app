@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "List of Movies";
+    var bookmarkedMovies = ViewData["BookmarkedMovies"] as IEnumerable<Movie>;  
 }
 
 <div class="row">
@@ -61,7 +62,20 @@
                                    asp-controller="Orders" 
                                    asp-action="AddItemToShoppingCart" 
                                    asp-route-id="@item.Id">
-                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))</a>
+                                <i class="bi bi-cart-plus"></i> Add to Bookmark (Price @item.Price.ToString("c"))</a>
+                                <a class="btn btn-success text-white @(bookmarkedMovies.Contains(item) ? "disabled" : "")" 
+                                   asp-controller="Bookmarks" 
+                                   asp-action="AddUserBookmark" 
+                                   asp-route-id="@item.Id">
+                                   @if(!bookmarkedMovies.Contains(item))
+                                   {
+                                        <i class="bi bi-bookmarks"> Save to bookmark</i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-bookmarks"> Saved</i>
+                                    }
+                                </a>
                             </p>
                         </div>
                     </div>

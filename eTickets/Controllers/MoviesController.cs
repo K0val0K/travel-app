@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eTickets.Controllers
@@ -17,16 +18,31 @@ namespace eTickets.Controllers
     public class MoviesController : Controller
     {
         private readonly IMoviesService _service;
+        private readonly IBookmarksService _bookmarksService;
 
-        public MoviesController(IMoviesService service)
+        public MoviesController(IMoviesService service, IBookmarksService bookmarksService)
         {
             _service = service;
+            _bookmarksService = bookmarksService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allMovies = await _service.GetAllAsync(n => n.Cinema);
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var bookmarks = await _bookmarksService.GetUserBookmarksAsync(userId);
+
+            var bookmarkedMovies = new List<Movie>();
+            foreach(var movie in allMovies)
+            {
+                if(bookmarks.Any(x => x.Movie == movie))
+                {
+                    bookmarkedMovies.Add(movie);
+                }
+            }
+            ViewData["BookmarkedMovies"] = bookmarkedMovies;
             return View(allMovies);
         }
 
