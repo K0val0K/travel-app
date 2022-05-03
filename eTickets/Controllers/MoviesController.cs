@@ -29,7 +29,7 @@ namespace eTickets.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var allMovies = await _service.GetAllAsync(n => n.Cinema);
+            var allMovies = await _service.GetAllAsync(n => n.TravelAgency);
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var bookmarks = await _bookmarksService.GetUserBookmarksAsync(userId);
@@ -49,7 +49,7 @@ namespace eTickets.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
-            var allMovies = await _service.GetAllAsync(n => n.Cinema);
+            var allMovies = await _service.GetAllAsync(n => n.TravelAgency);
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -76,7 +76,7 @@ namespace eTickets.Controllers
         {
             var movieDropdownsData = await _service.GetNewMovieDropdownsValues();
 
-            ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+            ViewBag.TravelAgency = new SelectList(movieDropdownsData.TravelAgencies, "Id", "Name");
             ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
             ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
 
@@ -90,7 +90,7 @@ namespace eTickets.Controllers
             {
                 var movieDropdownsData = await _service.GetNewMovieDropdownsValues();
 
-                ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+                ViewBag.TravelAgency = new SelectList(movieDropdownsData.TravelAgencies, "Id", "Name");
                 ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
                 ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
 
@@ -118,13 +118,13 @@ namespace eTickets.Controllers
                 EndDate = movieDetails.EndDate,
                 ImageURL = movieDetails.ImageURL,
                 MovieCategory = movieDetails.MovieCategory,
-                CinemaId = movieDetails.CinemaId,
+                TravelAgencyId = movieDetails.TravelAgencyId,
                 ProducerId = movieDetails.ProducerId,
                 ActorIds = movieDetails.Actors_Movies.Select(n => n.ActorId).ToList(),
             };
 
             var movieDropdownsData = await _service.GetNewMovieDropdownsValues();
-            ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+            ViewBag.TravelAgency = new SelectList(movieDropdownsData.TravelAgencies, "Id", "Name");
             ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
             ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
 
@@ -140,7 +140,7 @@ namespace eTickets.Controllers
             {
                 var movieDropdownsData = await _service.GetNewMovieDropdownsValues();
 
-                ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+                ViewBag.TravelAgency = new SelectList(movieDropdownsData.TravelAgencies, "Id", "Name");
                 ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
                 ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
 

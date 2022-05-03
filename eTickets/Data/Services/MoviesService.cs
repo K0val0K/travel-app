@@ -25,7 +25,7 @@ namespace eTickets.Data.Services
                 Description = data.Description,
                 Price = data.Price,
                 ImageURL = data.ImageURL,
-                CinemaId = data.CinemaId,
+                TravelAgencyId = data.TravelAgencyId,
                 StartDate = data.StartDate,
                 EndDate = data.EndDate,
                 MovieCategory = data.MovieCategory,
@@ -50,7 +50,7 @@ namespace eTickets.Data.Services
         public async Task<Movie> GetMovieByIdAsync(int id)
         {
             var movieDetails = await _context.Movies
-                .Include(c => c.Cinema)
+                .Include(c => c.TravelAgency)
                 .Include(p => p.Producer)
                 .Include(am => am.Actors_Movies).ThenInclude(a => a.Actor)
                 .FirstOrDefaultAsync(n => n.Id == id);
@@ -63,7 +63,7 @@ namespace eTickets.Data.Services
             var response = new NewMovieDropdownsVM()
             {
                 Actors = await _context.Actors.OrderBy(n => n.FullName).ToListAsync(),
-                Cinemas = await _context.Cinemas.OrderBy(n => n.Name).ToListAsync(),
+                TravelAgencies = await _context.TravelAgencies.OrderBy(n => n.Name).ToListAsync(),
                 Producers = await _context.Producers.OrderBy(n => n.FullName).ToListAsync()
             };
 
@@ -80,7 +80,7 @@ namespace eTickets.Data.Services
                 dbMovie.Description = data.Description;
                 dbMovie.Price = data.Price;
                 dbMovie.ImageURL = data.ImageURL;
-                dbMovie.CinemaId = data.CinemaId;
+                dbMovie.TravelAgencyId = data.TravelAgencyId;
                 dbMovie.StartDate = data.StartDate;
                 dbMovie.EndDate = data.EndDate;
                 dbMovie.MovieCategory = data.MovieCategory;

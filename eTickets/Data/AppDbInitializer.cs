@@ -20,36 +20,36 @@ namespace eTickets.Data
 
                 context.Database.EnsureCreated();
 
-                //Cinema
-                if (!context.Cinemas.Any())
+                //Travel Agencies
+                if (!context.TravelAgencies.Any())
                 {
-                    context.Cinemas.AddRange(new List<Cinema>()
+                    context.TravelAgencies.AddRange(new List<TravelAgency>()
                     {
-                        new Cinema()
+                        new TravelAgency()
                         {
                             Name = "Cinema 1",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-1.jpeg",
                             Description = "This is the description of the first cinema"
                         },
-                        new Cinema()
+                        new TravelAgency()
                         {
                             Name = "Cinema 2",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-2.jpeg",
                             Description = "This is the description of the first cinema"
                         },
-                        new Cinema()
+                        new TravelAgency()
                         {
                             Name = "Cinema 3",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-3.jpeg",
                             Description = "This is the description of the first cinema"
                         },
-                        new Cinema()
+                        new TravelAgency()
                         {
                             Name = "Cinema 4",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-4.jpeg",
                             Description = "This is the description of the first cinema"
                         },
-                        new Cinema()
+                        new TravelAgency()
                         {
                             Name = "Cinema 5",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-5.jpeg",
@@ -149,7 +149,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-3.jpeg",
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(10),
-                            CinemaId = 3,
+                            TravelAgencyId = 3,
                             ProducerId = 3,
                             MovieCategory = MovieCategory.Documentary
                         },
@@ -161,7 +161,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-1.jpeg",
                             StartDate = DateTime.Now,
                             EndDate = DateTime.Now.AddDays(3),
-                            CinemaId = 1,
+                            TravelAgencyId = 1,
                             ProducerId = 1,
                             MovieCategory = MovieCategory.Action
                         },
@@ -173,7 +173,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-4.jpeg",
                             StartDate = DateTime.Now,
                             EndDate = DateTime.Now.AddDays(7),
-                            CinemaId = 4,
+                            TravelAgencyId = 4,
                             ProducerId = 4,
                             MovieCategory = MovieCategory.Horror
                         },
@@ -185,7 +185,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-6.jpeg",
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(-5),
-                            CinemaId = 1,
+                            TravelAgencyId = 1,
                             ProducerId = 2,
                             MovieCategory = MovieCategory.Documentary
                         },
@@ -197,7 +197,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-7.jpeg",
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(-2),
-                            CinemaId = 1,
+                            TravelAgencyId = 1,
                             ProducerId = 3,
                             MovieCategory = MovieCategory.Cartoon
                         },
@@ -209,7 +209,7 @@ namespace eTickets.Data
                             ImageURL = "http://dotnethow.net/images/movies/movie-8.jpeg",
                             StartDate = DateTime.Now.AddDays(3),
                             EndDate = DateTime.Now.AddDays(20),
-                            CinemaId = 1,
+                            TravelAgencyId = 1,
                             ProducerId = 5,
                             MovieCategory = MovieCategory.Drama
                         }

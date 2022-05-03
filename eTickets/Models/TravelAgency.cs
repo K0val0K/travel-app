@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace eTickets.Models
 {
-    public class Cinema:IEntityBase
+    public class TravelAgency:IEntityBase
     {
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Cinema Logo")]
-        [Required(ErrorMessage = "Cinema logo is required")]
+        [Display(Name = "Travel agency Logo")]
+        [Required(ErrorMessage = "Travel agency logo is required")]
         public string Logo { get; set; }
 
-        [Display(Name = "Cinema Name")]
-        [Required(ErrorMessage = "Cinema name is required")]
+        [Display(Name = "Travel agency name")]
+        [Required(ErrorMessage = "Travel agency name is required")]
         public string Name { get; set; }
 
         [Display(Name = "Description")]
-        [Required(ErrorMessage = "Cinema description is required")]
+        [Required(ErrorMessage = "Travel agency description is required")]
         public string Description { get; set; }
 
         //Relationships
-        public List<Movie> Movies { get; set; }
+        public List<Movie> Tour { get; set; }
     }
 }
