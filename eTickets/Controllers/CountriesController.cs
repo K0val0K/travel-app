@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace eTickets.Controllers
 {
     [Authorize(Roles = UserRoles.Admin)]
-    public class ActorsController : Controller
+    public class CountriesController : Controller
     {
-        private readonly IActorsService _service;
+        private readonly ICountriesService _service;
 
-        public ActorsController(IActorsService service)
+        public CountriesController(ICountriesService service)
         {
             _service = service;
         }
@@ -28,53 +28,53 @@ namespace eTickets.Controllers
             return View(data);
         }
 
-        //Get: Actors/Create
+        //Get: Countries/Create
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("FullName,ProfilePictureURL,Bio")]Actor actor)
+        public async Task<IActionResult> Create([Bind("FullName,CountryPictureURL,Description")]Country country)
         {
             if (!ModelState.IsValid)
             {
-                return View(actor);
+                return View(country);
             }
-            await _service.AddAsync(actor);
+            await _service.AddAsync(country);
             return RedirectToAction(nameof(Index));
         }
 
-        //Get: Actors/Details/1
+        //Get: Countries/Details/1
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var actorDetails = await _service.GetByIdAsync(id);
+            var countryDetails = await _service.GetByIdAsync(id);
 
-            if (actorDetails == null) return View("NotFound");
-            return View(actorDetails);
+            if (countryDetails == null) return View("NotFound");
+            return View(countryDetails);
         }
 
-        //Get: Actors/Edit/1
+        //Get: Countries/Edit/1
         public async Task<IActionResult> Edit(int id)
         {
-            var actorDetails = await _service.GetByIdAsync(id);
-            if (actorDetails == null) return View("NotFound");
-            return View(actorDetails);
+            var countryDetails = await _service.GetByIdAsync(id);
+            if (countryDetails == null) return View("NotFound");
+            return View(countryDetails);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,ProfilePictureURL,Bio")] Actor actor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CountryName,CountryPictureURL,Description")] Country country)
         {
             if (!ModelState.IsValid)
             {
-                return View(actor);
+                return View(country);
             }
-            await _service.UpdateAsync(id, actor);
+            await _service.UpdateAsync(id, country);
             return RedirectToAction(nameof(Index));
         }
 
-        //Get: Actors/Delete/1
+        //Get: Countries/Delete/1
         public async Task<IActionResult> Delete(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);

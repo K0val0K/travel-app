@@ -1,7 +1,7 @@
-﻿@model Movie
+﻿@model Tour
 
 @{
-    ViewData["Title"] = "Movie details";
+    ViewData["Title"] = "Tour details";
 }
 
 <div class="row">
@@ -29,13 +29,7 @@
                                 @Model.TravelAgency.Name
                             </a>
                         </p>
-                        <p class="card-text">
-                            <b>Producer: </b>
-                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.ProducerId">
-                                @Model.Producer.FullName
-                            </a>
-                        </p>
-                        <p class="card-text"><b>Category: </b>@Model.MovieCategory</p>
+                        <p class="card-text"><b>Category: </b>@Model.TourCategory</p>
                         <p class="card-text"><b>Start Date: </b>@Model.StartDate.ToString("dd MMM yy")</p>
                         <p class="card-text"><b>End Date: </b>@Model.EndDate.ToString("dd MMM yy")</p>
                         <p class="card-text ">
@@ -54,15 +48,15 @@
                             }
                         </p>
                         <p class="card-text">
-                            <b>Actors: </b>
+                            <b>Countries: </b>
                             <hr />
                             <div class="row">
-                                @foreach (var actor in Model.Actors_Movies)
+                                @foreach (var country in Model.Countries_Tours)
                                 {
                                     <div class="column text-center">
-                                        <img class="border-info rounded-circle" src="@actor.Actor.ProfilePictureURL" style="max-width: 150px" />
+                                        <img class="border-info rounded-circle" src="@country.Country.CountryPictureURL" style="max-width: 150px" />
                                         <br />
-                                        <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId">@actor.Actor.FullName</a>
+                                        <a asp-controller="Countries" asp-action="Details" asp-route-id="@country.CountryId">@country.Country.CountryName</a>
                                     </div>
                                 }
                             </div>

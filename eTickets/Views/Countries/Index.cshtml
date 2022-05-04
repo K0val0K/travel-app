@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Actor>
+﻿@model IEnumerable<Country>
 
 @{
-    ViewData["Title"] = "List of Actors";
+    ViewData["Title"] = "List of Countries";
 }
 
 <div class="row">
@@ -10,9 +10,9 @@
         <table class="table">
             <thead>
                 <tr class="text-center">
-                    <th>@Html.DisplayNameFor(model => model.ProfilePictureURL)</th>
-                    <th>@Html.DisplayNameFor(model => model.FullName)</th>
-                    <th>@Html.DisplayNameFor(model => model.Bio)</th>
+                    <th>@Html.DisplayNameFor(model => model.CountryPictureURL)</th>
+                    <th>@Html.DisplayNameFor(model => model.CountryName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
                         <th>Actions</th>
@@ -24,13 +24,13 @@
                 {
                 <tr>
                     <td class="align-middle">
-                        <img class="rounded-circle" src="@item.ProfilePictureURL" alt="@item.FullName" style="max-width: 150px" />
+                        <img class="rounded-circle" src="@item.CountryPictureURL" alt="@item.CountryName" style="max-width: 150px" />
                     </td>
                     <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.FullName)
+                        @Html.DisplayFor(modelItem => item.CountryName)
                     </td>
                     <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Bio)
+                        @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -50,4 +50,4 @@
     </div>
 </div>
 
-@await Html.PartialAsync("_CreateItem", "Actors") 
+@await Html.PartialAsync("_CreateItem", "Countries") 

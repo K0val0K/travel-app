@@ -1,19 +1,19 @@
-﻿@model NewMovieVM
+﻿@model NewTourVM
 @using eTickets.Data;
  
 @{
-    ViewData["Title"] = "Update movie";
+    ViewData["Title"] = "Create a new tour";
 }
 
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
-            <h4>Update movie</h4>
+            <h4>Create a new tour</h4>
         </p>
 
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Edit">
+                <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row">
@@ -51,19 +51,14 @@
                                 <span asp-validation-for="TravelAgencyId" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="MovieCategory" class="control-label"></label>
-                                <select asp-for="MovieCategory" class="form-control" asp-items="Html.GetEnumSelectList<MovieCategory>()"></select>
-                                <span asp-validation-for="MovieCategory" class="text-danger"></span>
+                                <label asp-for="TourCategory" class="control-label"></label>
+                                <select asp-for="TourCategory" class="form-control" asp-items="Html.GetEnumSelectList<TourCategory>()"></select>
+                                <span asp-validation-for="TourCategory" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="ProducerId" class="control-label"></label>
-                                <select asp-for="ProducerId" class="form-control" asp-items="ViewBag.Producers"></select>
-                                <span asp-validation-for="ProducerId" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="ActorIds" class="control-label"></label>
-                                <select asp-for="ActorIds" class="form-control"  asp-items="ViewBag.Actors" multiple></select>
-                                <span asp-validation-for="ActorIds" class="text-danger"></span>
+                                <label asp-for="CountryIds" class="control-label"></label>
+                                <select asp-for="CountryIds" class="form-control"  asp-items="ViewBag.Countries" multiple></select>
+                                <span asp-validation-for="CountryIds" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -80,7 +75,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Update" class="btn btn-outline-success float-right" />
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
                         <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
                     </div>
 
@@ -94,11 +89,6 @@
 
 @section Scripts{ 
     <script>
-        $(document).ready(function () {
-            var output = document.getElementById("ImageUrlPreview");
-            output.src = $("#ImageURL").val();
-        });
-
         $("#ImageURL").on("change", function () {
             var output = document.getElementById("ImageUrlPreview");
             output.src = $(this).val();

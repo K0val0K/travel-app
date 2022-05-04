@@ -14,35 +14,52 @@ namespace eTickets.Data.Services
         {
             _context = appDbContext;
         }
-        public async Task AddUserBookmark(string userId, Movie movie)
+        public async Task AddUserBookmark(string userId, Tour tour)
         {
             var user = await _context.Users.FindAsync(userId);
 
             var bookmark = new UserTourBookmark()
             {
                 User = user,
-                Movie = movie,
+                Tour = tour,
             };
 
-            if(user != null && !_context.Bookmarks.Any(x => x.User == user && x.Movie == movie))
+            if(user != null && !_context.Bookmarks.Any(x => x.User == user && x.Tour == tour))
             {
                 await _context.AddAsync(bookmark);
                 await _context.SaveChangesAsync();
             }       
         }
 
-        public async Task DeleteUserBookmark(string userId, Movie movie)
+        public async Task DeleteTourBookmarks(Tour tour)
         {
-            var user = _context.Users.Find(userId);
-            var bookmark = await _context.Bookmarks.FirstOrDefaultAsync(x => x.Movie == movie && x.User == user);
+            var bookmarks = await _context.Bookmarks.Where(x => x.Tour == tour).ToListAsync();
 
-            _context.Bookmarks.Remove(bookmark);
+            foreach(var bookmark in bookmarks)
+            {
+                _context.Bookmarks.Remove(bookmark);
+            }
+
             _context.SaveChanges();
         }
 
+        public async Task DeleteUserBookmark(string userId, Tour tour)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            var bookmark = await _context.Bookmarks.FirstOrDefaultAsync(x => x.Tour == tour && x.User == user);
+
+            if(bookmark != null)
+            {
+                _context.Bookmarks.Remove(bookmark);
+            }
+            _context.SaveChanges();
+        }
+
+
         public async Task<List<UserTourBookmark>> GetUserBookmarksAsync(string userId)
         {
-            var bookmarks = await _context.Bookmarks.Include(n => n.User).Include(n => n.Movie).ToListAsync();
+            var bookmarks = await _context.Bookmarks.Include(n => n.User).Include(n => n.Tour).ToListAsync();
 
             bookmarks = bookmarks.Where(n => n.User.Id == userId).ToList();
 

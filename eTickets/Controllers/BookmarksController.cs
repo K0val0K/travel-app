@@ -10,11 +10,11 @@ namespace eTickets.Controllers
     public class BookmarksController : Controller
     {
         private readonly IBookmarksService _bookmarksService;
-        private readonly IMoviesService _moviesService;
-        public BookmarksController(IBookmarksService bookmarksService, IMoviesService moviesService)
+        private readonly IToursService _toursService;
+        public BookmarksController(IBookmarksService bookmarksService, IToursService toursService)
         {
             _bookmarksService = bookmarksService;
-            _moviesService = moviesService;
+            _toursService = toursService;
         }
         public async Task<IActionResult> Index()
         {
@@ -26,7 +26,7 @@ namespace eTickets.Controllers
 
         public async Task<IActionResult> AddUserBookmark(int id)
         {
-            var item = await _moviesService.GetByIdAsync(id);
+            var item = await _toursService.GetByIdAsync(id);
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
 
@@ -38,9 +38,18 @@ namespace eTickets.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //public async Task<IActionResult> RemoveUserBookMark(int id)
-        //{
-            
-        //}
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteUserBookmark(int id)
+        {
+            var item = await _toursService.GetByIdAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (item != null)
+            {
+                await _bookmarksService.DeleteUserBookmark(userId, item);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

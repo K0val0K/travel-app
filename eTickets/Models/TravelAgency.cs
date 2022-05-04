@@ -25,6 +25,6 @@ namespace eTickets.Models
         public string Description { get; set; }
 
         //Relationships
-        public List<Movie> Tour { get; set; }
+        public List<Tour> Tours { get; set; }
     }
 }

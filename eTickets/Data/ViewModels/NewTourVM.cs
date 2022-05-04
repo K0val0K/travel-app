@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace eTickets.Models
 {
-    public class NewMovieVM
+    public class NewTourVM
     {
         public int Id { get; set; }
 
-        [Display(Name = "Movie name")]
+        [Display(Name = "Tour name")]
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
-        [Display(Name = "Movie description")]
+        [Display(Name = "Tour description")]
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
@@ -25,33 +25,29 @@ namespace eTickets.Models
         [Required(ErrorMessage = "Price is required")]
         public double Price { get; set; }
 
-        [Display(Name = "Movie poster URL")]
-        [Required(ErrorMessage = "Movie poster URL is required")]
+        [Display(Name = "Tour poster URL")]
+        [Required(ErrorMessage = "Tour poster URL is required")]
         public string ImageURL { get; set; }
 
-        [Display(Name = "Movie start date")]
+        [Display(Name = "Tour start date")]
         [Required(ErrorMessage = "Start date is required")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Movie end date")]
+        [Display(Name = "Tour end date")]
         [Required(ErrorMessage = "End date is required")]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "Select a category")]
-        [Required(ErrorMessage = "Movie category is required")]
-        public MovieCategory MovieCategory { get; set; }
+        [Required(ErrorMessage = "Tour category is required")]
+        public TourCategory TourCategory { get; set; }
 
         //Relationships
-        [Display(Name = "Select actor(s)")]
-        [Required(ErrorMessage = "Movie actor(s) is required")]
-        public List<int> ActorIds { get; set; }
+        [Display(Name = "Select country(-es)")]
+        [Required(ErrorMessage = "Tour country(-es) is required")]
+        public List<int> CountryIds { get; set; }
 
         [Display(Name = "Select a travel agency")]
         [Required(ErrorMessage = "Travel agency is required")]
         public int TravelAgencyId { get; set; }
-
-        [Display(Name = "Select a producer")]
-        [Required(ErrorMessage = "Movie producer is required")]
-        public int ProducerId { get; set; }
     }
 }

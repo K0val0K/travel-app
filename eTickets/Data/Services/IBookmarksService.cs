@@ -8,8 +8,10 @@ namespace eTickets.Data.Services
     {
         Task<List<UserTourBookmark>> GetUserBookmarksAsync(string userId);
 
-        Task AddUserBookmark(string userId, Movie movie);
+        Task AddUserBookmark(string userId, Tour tour);
 
-        Task DeleteUserBookmark(string userId, Movie movie);
+        Task DeleteUserBookmark(string userId, Tour tour);
+
+        Task DeleteTourBookmarks(Tour tour);
     }
 }

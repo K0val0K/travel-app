@@ -27,121 +27,83 @@ namespace eTickets.Data
                     {
                         new TravelAgency()
                         {
-                            Name = "Cinema 1",
+                            Name = "Travel Agency 1",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-1.jpeg",
                             Description = "This is the description of the first cinema"
                         },
                         new TravelAgency()
                         {
-                            Name = "Cinema 2",
+                            Name = "Travel Agency 2",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-2.jpeg",
                             Description = "This is the description of the first cinema"
                         },
                         new TravelAgency()
                         {
-                            Name = "Cinema 3",
+                            Name = "Travel Agency 3",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-3.jpeg",
                             Description = "This is the description of the first cinema"
                         },
                         new TravelAgency()
                         {
-                            Name = "Cinema 4",
+                            Name = "Travel Agency 4",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-4.jpeg",
                             Description = "This is the description of the first cinema"
                         },
                         new TravelAgency()
                         {
-                            Name = "Cinema 5",
+                            Name = "Travel Agency 5",
                             Logo = "http://dotnethow.net/images/cinemas/cinema-5.jpeg",
                             Description = "This is the description of the first cinema"
                         },
                     });
                     context.SaveChanges();
                 }
-                //Actors
-                if (!context.Actors.Any())
+                //Countries
+                if (!context.Countries.Any())
                 {
-                    context.Actors.AddRange(new List<Actor>()
+                    context.Countries.AddRange(new List<Country>()
                     {
-                        new Actor()
+                        new Country()
                         {
-                            FullName = "Actor 1",
-                            Bio = "This is the Bio of the first actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/actors/actor-1.jpeg"
+                            CountryName = "Country 1",
+                            Description = "This is the Bio of the first actor",
+                            CountryPictureURL = "http://dotnethow.net/images/actors/actor-1.jpeg"
 
                         },
-                        new Actor()
+                        new Country()
                         {
-                            FullName = "Actor 2",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/actors/actor-2.jpeg"
+                            CountryName = "Country 2",
+                            Description = "This is the Bio of the second actor",
+                            CountryPictureURL = "http://dotnethow.net/images/actors/actor-2.jpeg"
                         },
-                        new Actor()
+                        new Country()
                         {
-                            FullName = "Actor 3",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/actors/actor-3.jpeg"
+                            CountryName = "Country 3",
+                            Description = "This is the Bio of the second actor",
+                            CountryPictureURL = "http://dotnethow.net/images/actors/actor-3.jpeg"
                         },
-                        new Actor()
+                        new Country()
                         {
-                            FullName = "Actor 4",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/actors/actor-4.jpeg"
+                            CountryName = "Country 4",
+                            Description = "This is the Bio of the second actor",
+                            CountryPictureURL = "http://dotnethow.net/images/actors/actor-4.jpeg"
                         },
-                        new Actor()
+                        new Country()
                         {
-                            FullName = "Actor 5",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/actors/actor-5.jpeg"
+                            CountryName = "Country 5",
+                            Description = "This is the Bio of the second actor",
+                            CountryPictureURL = "http://dotnethow.net/images/actors/actor-5.jpeg"
                         }
                     });
                     context.SaveChanges();
                 }
-                //Producers
-                if (!context.Producers.Any())
-                {
-                    context.Producers.AddRange(new List<Producer>()
-                    {
-                        new Producer()
-                        {
-                            FullName = "Producer 1",
-                            Bio = "This is the Bio of the first actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-1.jpeg"
 
-                        },
-                        new Producer()
-                        {
-                            FullName = "Producer 2",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-2.jpeg"
-                        },
-                        new Producer()
-                        {
-                            FullName = "Producer 3",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-3.jpeg"
-                        },
-                        new Producer()
-                        {
-                            FullName = "Producer 4",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-4.jpeg"
-                        },
-                        new Producer()
-                        {
-                            FullName = "Producer 5",
-                            Bio = "This is the Bio of the second actor",
-                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-5.jpeg"
-                        }
-                    });
-                    context.SaveChanges();
-                }
-                //Movies
-                if (!context.Movies.Any())
+                //Tours
+                if (!context.Tours.Any())
                 {
-                    context.Movies.AddRange(new List<Movie>()
+                    context.Tours.AddRange(new List<Tour>()
                     {
-                        new Movie()
+                        new Tour()
                         {
                             Name = "Life",
                             Description = "This is the Life movie description",
@@ -150,10 +112,9 @@ namespace eTickets.Data
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(10),
                             TravelAgencyId = 3,
-                            ProducerId = 3,
-                            MovieCategory = MovieCategory.Documentary
+                            TourCategory = TourCategory.AllInclusive
                         },
-                        new Movie()
+                        new Tour()
                         {
                             Name = "The Shawshank Redemption",
                             Description = "This is the Shawshank Redemption description",
@@ -162,10 +123,9 @@ namespace eTickets.Data
                             StartDate = DateTime.Now,
                             EndDate = DateTime.Now.AddDays(3),
                             TravelAgencyId = 1,
-                            ProducerId = 1,
-                            MovieCategory = MovieCategory.Action
+                            TourCategory = TourCategory.Excursion
                         },
-                        new Movie()
+                        new Tour()
                         {
                             Name = "Ghost",
                             Description = "This is the Ghost movie description",
@@ -174,10 +134,9 @@ namespace eTickets.Data
                             StartDate = DateTime.Now,
                             EndDate = DateTime.Now.AddDays(7),
                             TravelAgencyId = 4,
-                            ProducerId = 4,
-                            MovieCategory = MovieCategory.Horror
+                            TourCategory = TourCategory.Shopping
                         },
-                        new Movie()
+                        new Tour()
                         {
                             Name = "Race",
                             Description = "This is the Race movie description",
@@ -186,10 +145,9 @@ namespace eTickets.Data
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(-5),
                             TravelAgencyId = 1,
-                            ProducerId = 2,
-                            MovieCategory = MovieCategory.Documentary
+                            TourCategory = TourCategory.Shopping
                         },
-                        new Movie()
+                        new Tour()
                         {
                             Name = "Scoob",
                             Description = "This is the Scoob movie description",
@@ -198,10 +156,9 @@ namespace eTickets.Data
                             StartDate = DateTime.Now.AddDays(-10),
                             EndDate = DateTime.Now.AddDays(-2),
                             TravelAgencyId = 1,
-                            ProducerId = 3,
-                            MovieCategory = MovieCategory.Cartoon
+                            TourCategory = TourCategory.Individual
                         },
-                        new Movie()
+                        new Tour()
                         {
                             Name = "Cold Soles",
                             Description = "This is the Cold Soles movie description",
@@ -210,109 +167,108 @@ namespace eTickets.Data
                             StartDate = DateTime.Now.AddDays(3),
                             EndDate = DateTime.Now.AddDays(20),
                             TravelAgencyId = 1,
-                            ProducerId = 5,
-                            MovieCategory = MovieCategory.Drama
+                            TourCategory = TourCategory.Shopping
                         }
                     });
                     context.SaveChanges();
                 }
-                //Actors & Movies
-                if (!context.Actors_Movies.Any())
+                //Countries & Tours
+                if (!context.Countries_Tours.Any())
                 {
-                    context.Actors_Movies.AddRange(new List<Actor_Movie>()
+                    context.Countries_Tours.AddRange(new List<Country_Tour>()
                     {
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 1,
-                            MovieId = 1
+                            CountryId = 1,
+                            TourId = 1
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 3,
-                            MovieId = 1
-                        },
-
-                         new Actor_Movie()
-                        {
-                            ActorId = 1,
-                            MovieId = 2
-                        },
-                         new Actor_Movie()
-                        {
-                            ActorId = 4,
-                            MovieId = 2
+                            CountryId = 3,
+                            TourId = 1
                         },
 
-                        new Actor_Movie()
+                         new Country_Tour()
                         {
-                            ActorId = 1,
-                            MovieId = 3
+                            CountryId = 1,
+                            TourId = 2
                         },
-                        new Actor_Movie()
+                         new Country_Tour()
                         {
-                            ActorId = 2,
-                            MovieId = 3
-                        },
-                        new Actor_Movie()
-                        {
-                            ActorId = 5,
-                            MovieId = 3
+                            CountryId = 4,
+                            TourId = 2
                         },
 
-
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 2,
-                            MovieId = 4
+                            CountryId = 1,
+                            TourId = 3
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 3,
-                            MovieId = 4
+                            CountryId = 2,
+                            TourId = 3
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 4,
-                            MovieId = 4
+                            CountryId = 5,
+                            TourId = 3
                         },
 
 
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 2,
-                            MovieId = 5
+                            CountryId = 2,
+                            TourId = 4
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 3,
-                            MovieId = 5
+                            CountryId = 3,
+                            TourId = 4
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 4,
-                            MovieId = 5
-                        },
-                        new Actor_Movie()
-                        {
-                            ActorId = 5,
-                            MovieId = 5
+                            CountryId = 4,
+                            TourId = 4
                         },
 
 
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 3,
-                            MovieId = 6
+                            CountryId = 2,
+                            TourId = 5
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 4,
-                            MovieId = 6
+                            CountryId = 3,
+                            TourId = 5
                         },
-                        new Actor_Movie()
+                        new Country_Tour()
                         {
-                            ActorId = 5,
-                            MovieId = 6
+                            CountryId = 4,
+                            TourId = 5
+                        },
+                        new Country_Tour()
+                        {
+                            CountryId = 5,
+                            TourId = 5
+                        },
+
+
+                        new Country_Tour()
+                        {
+                            CountryId = 3,
+                            TourId = 6
+                        },
+                        new Country_Tour()
+                        {
+                            CountryId = 4,
+                            TourId = 6
+                        },
+                        new Country_Tour()
+                        {
+                            CountryId = 5,
+                            TourId = 6
                         },
                     });
                     context.SaveChanges();

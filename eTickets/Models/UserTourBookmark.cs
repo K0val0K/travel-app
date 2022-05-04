@@ -7,7 +7,7 @@ namespace eTickets.Models
         [Key]
         public int Id { get; set; }
 
-        public Movie Movie { get; set; }
+        public Tour Tour { get; set; }
         
         public ApplicationUser User { get; set; }
     }

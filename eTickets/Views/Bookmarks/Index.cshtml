@@ -23,8 +23,13 @@
                 {
                 <tr>
                     <td class="align-middle">@bookmark.Id</td>
-                    <td class="align-middle">@bookmark.Movie.Name</td>  
-                    <td class="align-middle">@bookmark.Movie.Description</td>  
+                    <td class="align-middle">@bookmark.Tour.Name</td>  
+                    <td class="align-middle">@bookmark.Tour.Description</td>
+                    <td class="align-middle">
+                    <form asp-action="Delete" asp-route-id="@bookmark.Tour.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger float-right" />
+                     </form>
+                    </td>
                  </tr>
                 }
             </tbody>

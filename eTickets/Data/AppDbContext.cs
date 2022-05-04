@@ -16,24 +16,23 @@ namespace eTickets.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Actor_Movie>().HasKey(am => new
+            modelBuilder.Entity<Country_Tour>().HasKey(am => new
             {
-                am.ActorId,
-                am.MovieId
+                am.CountryId,
+                am.TourId
             });
 
-            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Movie).WithMany(am => am.Actors_Movies).HasForeignKey(m => m.MovieId);
-            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Actor).WithMany(am => am.Actors_Movies).HasForeignKey(m => m.ActorId);
+            modelBuilder.Entity<Country_Tour>().HasOne(m => m.Tour).WithMany(am => am.Countries_Tours).HasForeignKey(m => m.TourId);
+            modelBuilder.Entity<Country_Tour>().HasOne(m => m.Country).WithMany(am => am.Countries_Tours).HasForeignKey(m => m.CountryId);
 
 
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Actor> Actors { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Actor_Movie> Actors_Movies { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Tour> Tours { get; set; }
+        public DbSet<Country_Tour> Countries_Tours { get; set; }
         public DbSet<TravelAgency> TravelAgencies { get; set; }
-        public DbSet<Producer> Producers { get; set; }
 
 
         //Orders related tables

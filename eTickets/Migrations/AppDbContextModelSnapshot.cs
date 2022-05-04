@@ -150,46 +150,6 @@ namespace eTickets.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("eTickets.Models.Actor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ProfilePictureURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Actors");
-                });
-
-            modelBuilder.Entity("eTickets.Models.Actor_Movie", b =>
-                {
-                    b.Property<int>("ActorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActorId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("Actors_Movies");
-                });
-
             modelBuilder.Entity("eTickets.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -258,47 +218,44 @@ namespace eTickets.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("eTickets.Models.Movie", b =>
+            modelBuilder.Entity("eTickets.Models.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CountryName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CountryPictureURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MovieCategory")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProducerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TravelAgencyId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProducerId");
+                    b.ToTable("Countries");
+                });
 
-                    b.HasIndex("TravelAgencyId");
+            modelBuilder.Entity("eTickets.Models.Country_Tour", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Movies");
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CountryId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("Countries_Tours");
                 });
 
             modelBuilder.Entity("eTickets.Models.Order", b =>
@@ -349,31 +306,6 @@ namespace eTickets.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("eTickets.Models.Producer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ProfilePictureURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Producers");
-                });
-
             modelBuilder.Entity("eTickets.Models.ShoppingCartItem", b =>
                 {
                     b.Property<int>("Id")
@@ -395,6 +327,44 @@ namespace eTickets.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("eTickets.Models.Tour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TourCategory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TravelAgencyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TravelAgencyId");
+
+                    b.ToTable("Tours");
                 });
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>
@@ -428,7 +398,7 @@ namespace eTickets.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MovieId")
+                    b.Property<int?>("TourId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -436,7 +406,7 @@ namespace eTickets.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("TourId");
 
                     b.HasIndex("UserId");
 
@@ -494,42 +464,23 @@ namespace eTickets.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eTickets.Models.Actor_Movie", b =>
+            modelBuilder.Entity("eTickets.Models.Country_Tour", b =>
                 {
-                    b.HasOne("eTickets.Models.Actor", "Actor")
-                        .WithMany("Actors_Movies")
-                        .HasForeignKey("ActorId")
+                    b.HasOne("eTickets.Models.Country", "Country")
+                        .WithMany("Countries_Tours")
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("eTickets.Models.Movie", "Movie")
-                        .WithMany("Actors_Movies")
-                        .HasForeignKey("MovieId")
+                    b.HasOne("eTickets.Models.Tour", "Tour")
+                        .WithMany("Countries_Tours")
+                        .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Actor");
+                    b.Navigation("Country");
 
-                    b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("eTickets.Models.Movie", b =>
-                {
-                    b.HasOne("eTickets.Models.Producer", "Producer")
-                        .WithMany("Movies")
-                        .HasForeignKey("ProducerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("eTickets.Models.TravelAgency", "TravelAgency")
-                        .WithMany("Tour")
-                        .HasForeignKey("TravelAgencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Producer");
-
-                    b.Navigation("TravelAgency");
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("eTickets.Models.Order", b =>
@@ -543,7 +494,7 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.OrderItem", b =>
                 {
-                    b.HasOne("eTickets.Models.Movie", "Movie")
+                    b.HasOne("eTickets.Models.Tour", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -562,36 +513,42 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.ShoppingCartItem", b =>
                 {
-                    b.HasOne("eTickets.Models.Movie", "Movie")
+                    b.HasOne("eTickets.Models.Tour", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId");
 
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("eTickets.Models.Tour", b =>
+                {
+                    b.HasOne("eTickets.Models.TravelAgency", "TravelAgency")
+                        .WithMany("Tour")
+                        .HasForeignKey("TravelAgencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TravelAgency");
+                });
+
             modelBuilder.Entity("eTickets.Models.UserTourBookmark", b =>
                 {
-                    b.HasOne("eTickets.Models.Movie", "Movie")
+                    b.HasOne("eTickets.Models.Tour", "Tour")
                         .WithMany()
-                        .HasForeignKey("MovieId");
+                        .HasForeignKey("TourId");
 
                     b.HasOne("eTickets.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Movie");
+                    b.Navigation("Tour");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("eTickets.Models.Actor", b =>
+            modelBuilder.Entity("eTickets.Models.Country", b =>
                 {
-                    b.Navigation("Actors_Movies");
-                });
-
-            modelBuilder.Entity("eTickets.Models.Movie", b =>
-                {
-                    b.Navigation("Actors_Movies");
+                    b.Navigation("Countries_Tours");
                 });
 
             modelBuilder.Entity("eTickets.Models.Order", b =>
@@ -599,9 +556,9 @@ namespace eTickets.Migrations
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("eTickets.Models.Producer", b =>
+            modelBuilder.Entity("eTickets.Models.Tour", b =>
                 {
-                    b.Navigation("Movies");
+                    b.Navigation("Countries_Tours");
                 });
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>

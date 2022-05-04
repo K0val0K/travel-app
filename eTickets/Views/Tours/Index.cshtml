@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Movie>
+﻿@model IEnumerable<Tour>
 
 @{
-    ViewData["Title"] = "List of Movies";
-    var bookmarkedMovies = ViewData["BookmarkedMovies"] as IEnumerable<Movie>;  
+    ViewData["Title"] = "List of Tours";
+    var bookmarkedTours = ViewData["BookmarkedTours"] as IEnumerable<Tour>;  
 }
 
 <div class="row">
@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <p class="card-text">@item.Description</p>
                             <p class="card-text"><b>Travel agency: </b>@item.TravelAgency.Name</p>
-                            <p class="card-text"><b>Category: </b>@item.MovieCategory</p>
+                            <p class="card-text"><b>Category: </b>@item.TourCategory</p>
                             <p class="card-text"><b>Start Date: </b>@item.StartDate.ToString("dd MMM yy")</p>
                             <p class="card-text"><b>End Date: </b>@item.EndDate.ToString("dd MMM yy")</p>
                             <p class="card-text ">
@@ -63,11 +63,11 @@
                                    asp-action="AddItemToShoppingCart" 
                                    asp-route-id="@item.Id">
                                 <i class="bi bi-cart-plus"></i> Add to Bookmark (Price @item.Price.ToString("c"))</a>
-                                <a class="btn btn-success text-white @(bookmarkedMovies.Contains(item) ? "disabled" : "")" 
+                                <a class="btn btn-success text-white @(bookmarkedTours.Contains(item) ? "disabled" : "")" 
                                    asp-controller="Bookmarks" 
                                    asp-action="AddUserBookmark" 
                                    asp-route-id="@item.Id">
-                                   @if(!bookmarkedMovies.Contains(item))
+                                   @if(!bookmarkedTours.Contains(item))
                                    {
                                         <i class="bi bi-bookmarks"> Save to bookmark</i>
                                     }
@@ -85,4 +85,4 @@
     }
 </div>
 
-@await Html.PartialAsync("_CreateItem", "Movies") 
+@await Html.PartialAsync("_CreateItem", "Tours") 
