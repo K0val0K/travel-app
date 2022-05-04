@@ -265,8 +265,14 @@ namespace eTickets.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ContactEmail")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonQuantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -276,57 +282,6 @@ namespace eTickets.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("eTickets.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
-                });
-
-            modelBuilder.Entity("eTickets.Models.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("eTickets.Models.Tour", b =>
@@ -365,6 +320,37 @@ namespace eTickets.Migrations
                     b.HasIndex("TravelAgencyId");
 
                     b.ToTable("Tours");
+                });
+
+            modelBuilder.Entity("eTickets.Models.TourOrderHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>
@@ -492,43 +478,34 @@ namespace eTickets.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("eTickets.Models.OrderItem", b =>
-                {
-                    b.HasOne("eTickets.Models.Tour", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("eTickets.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("eTickets.Models.ShoppingCartItem", b =>
-                {
-                    b.HasOne("eTickets.Models.Tour", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId");
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("eTickets.Models.Tour", b =>
                 {
                     b.HasOne("eTickets.Models.TravelAgency", "TravelAgency")
-                        .WithMany("Tour")
+                        .WithMany("Tours")
                         .HasForeignKey("TravelAgencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TravelAgency");
+                });
+
+            modelBuilder.Entity("eTickets.Models.TourOrderHistory", b =>
+                {
+                    b.HasOne("eTickets.Models.Order", "Order")
+                        .WithMany("OrderHistoryItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eTickets.Models.Tour", "Tour")
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("eTickets.Models.UserTourBookmark", b =>
@@ -553,7 +530,7 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("OrderHistoryItems");
                 });
 
             modelBuilder.Entity("eTickets.Models.Tour", b =>
@@ -563,7 +540,7 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>
                 {
-                    b.Navigation("Tour");
+                    b.Navigation("Tours");
                 });
 #pragma warning restore 612, 618
         }
