@@ -60,10 +60,11 @@
                                 </a>
                                 <a class="btn btn-success text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")" 
                                    asp-controller="Orders" 
-                                   asp-action="AddItemToShoppingCart" 
-                                   asp-route-id="@item.Id">
-                                <i class="bi bi-cart-plus"></i> Add to Bookmark (Price @item.Price.ToString("c"))</a>
-                                <a class="btn btn-success text-white @(bookmarkedTours.Contains(item) ? "disabled" : "")" 
+                                   asp-action="Create" 
+                                   asp-route-tourId="@item.Id">
+                                <i class="bi bi-cart-plus"></i> Book now
+                                (Price @item.Price.ToString("c"))</a>
+                                <a class="btn btn-info text-white @(bookmarkedTours.Contains(item) ? "disabled" : "")" 
                                    asp-controller="Bookmarks" 
                                    asp-action="AddUserBookmark" 
                                    asp-route-id="@item.Id">

@@ -37,7 +37,6 @@
                                         <a class="dropdown-item" asp-controller="TravelAgencies" asp-action="Index"><i class="bi bi-briefcase"></i> Travel Agencies</a>
                                         <a class="dropdown-item" asp-controller="Countries" asp-action="Index"><i class="bi bi-flag"></i> Countries</a>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="Users"><i class="bi bi-people"></i> Users</a>
-                                        <a class="dropdown-item" asp-controller="" asp-action=""><i class="bi bi-people"></i> Users</a>
                                         <a class="dropdown-item" asp-controller="" asp-action=""><i class="bi bi-file-earmark"></i> Orders</a>
                                     </div>
                                 </li>
@@ -48,10 +47,6 @@
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a tour..." aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     </form>
-
-                    <ul class="navbar-nav">
-                        @await Component.InvokeAsync("ShoppingCartSummary")
-                    </ul>
 
                     <partial name="_Identity.cshtml" />
                 </div>

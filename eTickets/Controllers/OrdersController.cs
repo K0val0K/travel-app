@@ -1,5 +1,4 @@
-﻿using eTickets.Data.Cart;
-using eTickets.Data.Services;
+﻿using eTickets.Data.Services;
 using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,17 +11,15 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
-    [Authorize] 
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IToursService _toursService;
-        private readonly ShoppingCart _shoppingCart;
         private readonly IOrdersService _ordersService;
 
-        public OrdersController(IToursService toursService, ShoppingCart shoppingCart, IOrdersService ordersService)
+        public OrdersController(IToursService toursService, IOrdersService ordersService)
         {
             _toursService = toursService;
-            _shoppingCart = shoppingCart;
             _ordersService = ordersService;
         }
 
@@ -35,51 +32,22 @@ namespace eTickets.Controllers
             return View(orders);
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> Create(int tourId)
         {
-            var items = _shoppingCart.GetShoppingCartItems();
-            _shoppingCart.ShoppingCartItems = items;
+            var tour = await _toursService.GetTourByIdAsync(tourId);
 
-            var response = new ShoppingCartVM()
+            var orderVM = new OrderVM()
             {
-                ShoppingCart = _shoppingCart,
-                ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
+                TourName = tour.Name
             };
 
-            return View(response);
+            return View(orderVM);
         }
 
-        public async Task<IActionResult> AddItemToShoppingCart(int id)
+        [HttpPost]
+        public async Task<IActionResult> Create(OrderVM orderVM)
         {
-            var item = await _toursService.GetTourByIdAsync(id);
-
-            if (item != null)
-            {
-                _shoppingCart.AddItemToCart(item);
-            }
-            return RedirectToAction(nameof(ShoppingCart));
-        }
-
-        public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
-        {
-            var item = await _toursService.GetTourByIdAsync(id);
-
-            if (item != null)
-            {
-                _shoppingCart.RemoveItemFromCart(item);
-            }
-            return RedirectToAction(nameof(ShoppingCart));
-        }
-
-        public async Task<IActionResult> CompleteOrder()
-        {
-            var items = _shoppingCart.GetShoppingCartItems();
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
-
-            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
-            await _shoppingCart.ClearShoppingCartAsync();
-
+            //Some logic
             return View("OrderCompleted");
         }
     }

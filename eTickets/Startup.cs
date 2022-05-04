@@ -1,5 +1,4 @@
 using eTickets.Data;
-using eTickets.Data.Cart;
 using eTickets.Data.Services;
 using eTickets.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -42,7 +41,6 @@ namespace eTickets
             services.AddScoped<IOrdersService, OrdersService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
             services.AddScoped<IBookmarksService, BookmarksService>();
 
             //Authentication and authorization

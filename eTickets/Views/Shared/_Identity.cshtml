@@ -21,14 +21,14 @@ else
             <i class="bi bi-person-badge"></i> Hello @UserManager.GetUserName(User)
         </button>
         <ul class="dropdown-menu" aria-labelledby="profile-btn">
-            @if (User.IsInRole("User"))
-            {
+@*            @if (User.IsInRole("User"))
+            {*@
                 <li>
                     <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
                     <i class="bi bi-list"></i> My Orders
                 </a>
             </li>
-            }
+@*            }*@
         </ul>
     </div>
     <span style="padding: 5px;"></span>

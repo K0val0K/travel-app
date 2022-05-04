@@ -1,0 +1,57 @@
+﻿@using eTickets.Data.ViewModels
+@model OrderVM
+
+@{
+    ViewData["Title"] = "Create tour order";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Create tour order</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="ContactEmail" class="control-label"></label>
+                        <input asp-for="ContactEmail" class="form-control" />
+                        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ContactPhone" class="control-label"></label>
+                        <input asp-for="ContactPhone" class="form-control" />
+                        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PersonQuantity" class="control-label"></label>
+                        <input asp-for="PersonQuantity" class="form-control" />
+                        <span asp-validation-for="PersonQuantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                         <a class="btn btn-secondary" asp-area="" asp-controller="Tours" asp-action="Index"> Back to tours</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script>
+
+        $(document).ready(function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $("#ProfilePictureURL").val();
+        })
+
+        $("#ProfilePictureURL").on("change", function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $(this).val();
+        })
+    </script>
+}

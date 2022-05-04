@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eTickets.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,17 +8,20 @@ using System.Threading.Tasks;
 
 namespace eTickets.Models
 {
-    public class OrderItem
+    public class TourOrderHistory
     {
         [Key]
         public int Id { get; set; }
 
-        public int Amount { get; set; }
-        public double Price { get; set; }
+        public OrderStatus Status { get; set; }
 
-        public int MovieId { get; set; }
-        [ForeignKey("MovieId")]
-        public Tour Movie { get; set; }
+        public string Comment { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public int TourId { get; set; }
+        [ForeignKey("TourId")]
+        public Tour Tour { get; set; }
 
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]

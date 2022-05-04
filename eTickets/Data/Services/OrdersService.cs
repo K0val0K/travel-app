@@ -17,7 +17,7 @@ namespace eTickets.Data.Services
 
         public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string userId, string userRole)
         {
-            var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Movie).Include(n => n.User).ToListAsync();
+            var orders = await _context.Orders.Include(n => n.OrderHistoryItems).ThenInclude(n => n.Tour).Include(n => n.User).ToListAsync();
 
             if(userRole != "Admin")
             {
@@ -27,28 +27,28 @@ namespace eTickets.Data.Services
             return orders;
         }
 
-        public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
-        {
-            var order = new Order()
-            {
-                UserId = userId,
-                Email = userEmailAddress
-            };
-            await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
+        //public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
+        //{
+            //var order = new Order()
+            //{
+            //    UserId = userId,
+            //    ContactEmail = userEmailAddress
+            //};
+            //await _context.Orders.AddAsync(order);
+            //await _context.SaveChangesAsync();
 
-            foreach (var item in items)
-            {
-                var orderItem = new OrderItem()
-                {
-                    Amount = item.Amount,
-                    MovieId = item.Movie.Id,
-                    OrderId = order.Id,
-                    Price = item.Movie.Price
-                };
-                await _context.OrderItems.AddAsync(orderItem);
-            }
-            await _context.SaveChangesAsync();
-        }
+            //foreach (var item in items)
+            //{
+            //    var orderItem = new TourOrderHistory()
+            //    {
+            //        Amount = item.Amount,
+            //        TourId = item.Movie.Id,
+            //        OrderId = order.Id,
+            //        Price = item.Movie.Price
+            //    };
+            //    await _context.OrderItems.AddAsync(orderItem);
+            //}
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }
