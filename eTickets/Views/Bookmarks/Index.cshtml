@@ -12,22 +12,21 @@
 
         <table class="table">
             <thead>
-                <tr>
-                    <th>Bookmark ID</th>
+                <tr class="text-center">
                     <th>Movie ID</th>
                     <th>Movie Description</th>
+                    <th>Management</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var bookmark in Model)
                 {
-                <tr>
-                    <td class="align-middle">@bookmark.Id</td>
+                <tr class="text-center">
                     <td class="align-middle">@bookmark.Tour.Name</td>  
                     <td class="align-middle">@bookmark.Tour.Description</td>
                     <td class="align-middle">
                     <form asp-action="Delete" asp-route-id="@bookmark.Tour.Id">
-                            <input type="submit" value="Delete" class="btn btn-danger float-right" />
+                            <input type="submit" value="Delete" class="btn btn-danger align-middle" />
                      </form>
                     </td>
                  </tr>

@@ -1,4 +1,5 @@
-﻿@using eTickets.Data.ViewModels
+﻿@using eTickets.Data.Enums
+@using eTickets.Data.ViewModels
 @model OrderVM
 
 @{
@@ -8,11 +9,11 @@
 <div class="row text">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Create tour order</h1>
+            <h1>Edit tour order</h1>
         </p>
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Create">
+                <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="TourId" />
                     <input type="hidden" asp-for="TourName" />
@@ -42,8 +43,11 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
-                         <a class="btn btn-secondary" asp-area="" asp-controller="Tours" asp-action="Index"> Back to tours</a>
+                        @if(@Model.OrderStatus == OrderStatus.Pending)
+                        {
+                            <input type="submit" value="Save changes" class="btn btn-outline-success float-right" />
+                        }
+                         <a class="btn btn-secondary" asp-area="" asp-controller="Orders" asp-action="Index"> Back without saving</a>
                     </div>
                 </form>
             </div>
@@ -53,15 +57,5 @@
 
 @section Scripts{ 
     <script>
-
-        $(document).ready(function () {
-            var output = document.getElementById('ProfilePicturePreview');
-            output.src = $("#ProfilePictureURL").val();
-        })
-
-        $("#ProfilePictureURL").on("change", function () {
-            var output = document.getElementById('ProfilePicturePreview');
-            output.src = $(this).val();
-        })
     </script>
 }

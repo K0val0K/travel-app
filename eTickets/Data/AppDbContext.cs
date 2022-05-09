@@ -37,7 +37,7 @@ namespace eTickets.Data
 
         //Orders related tables
         public DbSet<Order> Orders { get; set; }
-        public DbSet<TourOrderHistory> OrderItems { get; set; }
+        public DbSet<OrderHistoryItem> OrderHistoryItems { get; set; }
 
         public DbSet<UserTourBookmark> Bookmarks { get; set; }
     }

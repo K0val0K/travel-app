@@ -22,6 +22,10 @@ namespace eTickets.Models
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; }
 
-        public List<TourOrderHistory> OrderHistoryItems { get; set; }
+        public int TourId { get; set; }
+        [ForeignKey(nameof(TourId))]
+        public Tour Tour { get; set; }
+
+        public List<OrderHistoryItem> OrderHistoryItems { get; set; }
     }
 }

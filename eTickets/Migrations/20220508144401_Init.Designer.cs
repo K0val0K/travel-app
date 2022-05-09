@@ -10,7 +10,7 @@ using eTickets.Data;
 namespace eTickets.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220504180612_Init")]
+    [Migration("20220508144401_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,14 +276,45 @@ namespace eTickets.Migrations
                     b.Property<int>("PersonQuantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TourId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("eTickets.Models.OrderHistoryItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderHistoryItems");
                 });
 
             modelBuilder.Entity("eTickets.Models.Tour", b =>
@@ -322,37 +353,6 @@ namespace eTickets.Migrations
                     b.HasIndex("TravelAgencyId");
 
                     b.ToTable("Tours");
-                });
-
-            modelBuilder.Entity("eTickets.Models.TourOrderHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>
@@ -473,11 +473,30 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.Order", b =>
                 {
+                    b.HasOne("eTickets.Models.Tour", "Tour")
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("eTickets.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
+                    b.Navigation("Tour");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("eTickets.Models.OrderHistoryItem", b =>
+                {
+                    b.HasOne("eTickets.Models.Order", "Order")
+                        .WithMany("OrderHistoryItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("eTickets.Models.Tour", b =>
@@ -489,25 +508,6 @@ namespace eTickets.Migrations
                         .IsRequired();
 
                     b.Navigation("TravelAgency");
-                });
-
-            modelBuilder.Entity("eTickets.Models.TourOrderHistory", b =>
-                {
-                    b.HasOne("eTickets.Models.Order", "Order")
-                        .WithMany("OrderHistoryItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("eTickets.Models.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("eTickets.Models.UserTourBookmark", b =>

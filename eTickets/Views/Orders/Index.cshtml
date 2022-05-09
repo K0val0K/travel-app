@@ -1,4 +1,5 @@
-﻿@model List<Order>
+﻿@using eTickets.Data.Enums
+@model List<Order>
 
 @{ 
     ViewData["Title"] = "All orders";
@@ -12,37 +13,107 @@
 
         <table class="table">
             <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Items</th>
-                    <th>Total</th>
+                <tr class="text-center">
+                    <th>Tour name</th>
+                    <th>Order info</th>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <th>User</th>
+                        <th>Created by</th>
                     }
+                    <th>Management</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var order in Model)
                 {
-                <tr>
-                    <td class="align-middle">@order.Id</td>
+                var historyCounter = 1;
+                <tr class="text-center">
+                    <td class="align-middle">@order.Tour.Name</td>
                     <td class="align-middle">
-                        <ul style="list-style-type:none">
-                            @foreach (var item in order.OrderHistoryItems)
+                        <h2 class="align-middle">Order History</h2>
+                        <table class="table">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">#</th>
+                                    <th>Date</th>
+                                    <th>Comment</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in order.OrderHistoryItems.OrderBy(x => x.CreateDate))
                             {
-                                <li>
-                                    <div class="alert alert-info" role="alert">
-                                        <span class="badge bg-success">@item.CreateDate</span> @item.Tour.Name
-                                    </div>
-                                </li>
-                            }
-                        </ul>
+                                <tr class="text-center">
+                                    <td scope="row">@historyCounter</td>
+                                    <td>@item.CreateDate</td>
+                                    <td>@item.Comment</td>
+                                    <td>@item.OrderStatus</td>
+                                </tr>
+                                historyCounter++;
+                             }
+                             </tbody>
+                        </table>
+                        <p>Current order status:
+                                @{
+                                    switch(@order.OrderHistoryItems.OrderBy(x => x.CreateDate).Last().OrderStatus)
+                                    {
+                                        case OrderStatus.Pending:
+                                            <span class="badge badge-secondary">Pending...</span>
+                                            break;
+                                        case OrderStatus.Confirmed:
+                                            <span class="badge badge-success">Confirmed</span>
+                                            break;
+                                        case OrderStatus.Cancelled:
+                                            <span class="badge badge-danger">Canceled by user</span>
+                                            break;
+                                        case OrderStatus.Rejected:
+                                            <span class="badge badge-danger">Rejected by tour agency</span>
+                                            break;
+                                        default: break;
+                                    }
+                                }
+                        </p>
                     </td>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <td class="align-middle"> @order.User.FullName </td>
+                        <td class="align-middle">@order.User.FullName (@order.ContactEmail)</td>
                     }
+
+                    <td class="align-middle">
+                    <a class="btn btn-outline-primary align-middle" asp-action="Edit" asp-route-id="@order.Id">View details</a>
+                    @{
+                                    switch(@order.OrderHistoryItems.OrderBy(x => x.CreateDate).Last().OrderStatus)
+                                    {
+                                        case OrderStatus.Pending:
+                                            
+                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                            {
+                                                <a class="btn btn-outline-primary align-middle" asp-action="Confirm" asp-route-id="@order.Id">Confirm</a>
+                                                <a class="btn btn-danger align-middle" asp-action="Reject" asp-route-id="@order.Id">Reject</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-danger align-middle" asp-action="Cancel" asp-route-id="@order.Id">Cancel</a>
+                                            }
+                                            break;
+                                        case OrderStatus.Confirmed:
+                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                            {
+                                                <a class="btn btn-danger align-middle" asp-action="Reject" asp-route-id="@order.Id">Reject</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-danger align-middle" asp-action="Cancel" asp-route-id="@order.Id">Cancel</a>
+                                            }
+                                            break;
+                                        case OrderStatus.Cancelled:
+                                            break;
+                                        case OrderStatus.Rejected:
+                                            break;
+                                        default: break;
+                                    }
+                                }
+                    </td>
                     </tr>
                 }
             </tbody>

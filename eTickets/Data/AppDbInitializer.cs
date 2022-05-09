@@ -289,6 +289,8 @@ namespace eTickets.Data
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
                 if (!await roleManager.RoleExistsAsync(UserRoles.User))
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+                if (!await roleManager.RoleExistsAsync(UserRoles.Manager))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
 
                 //Users
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
