@@ -8,12 +8,14 @@ namespace eTickets.Data.ViewModels
 {
     public class UserVM
     {
-        [Display(Name = "Email address")]
-        [Required(ErrorMessage = "Email address is required")]
-        public string EmailAddress { get; set; }
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Role { get; set; }
+
+        public int TravelAgencyId { get; set; }
+        public string TravelAgency { get; set; }
     } 
 }

@@ -4,35 +4,47 @@ using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Roles = "Admin, Manager")]
     public class ToursController : Controller
     {
         private readonly IToursService _service;
         private readonly IBookmarksService _bookmarksService;
+        private readonly ITravelManagerService _travelManagerService;
 
-        public ToursController(IToursService service, IBookmarksService bookmarksService)
+        public ToursController(IToursService service, IBookmarksService bookmarksService, ITravelManagerService travelManagerService)
         {
             _service = service;
             _bookmarksService = bookmarksService;
+            _travelManagerService = travelManagerService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var allTours = await _service.GetAllAsync(n => n.TravelAgency);
-
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            var allTours = await _service.GetAllAsync(n => n.TravelAgency);
+            if (userRole == UserRoles.Manager)
+            {
+                var travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+                allTours = allTours.Where(n => n.TravelAgencyId == travelAgencyId);
+            }
+           
+
+            //bookmarks check
             var bookmarks = await _bookmarksService.GetUserBookmarksAsync(userId);
 
             var bookmarkedTours = new List<Tour>();
@@ -54,14 +66,55 @@ namespace eTickets.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                //var filteredResult = allTours.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+                var filteredResultNew = allTours.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
 
-                var filteredResultNew = allTours.Where(n => string.Equals(n.Name, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var bookmarks = await _bookmarksService.GetUserBookmarksAsync(userId);
+
+                var bookmarkedTours = new List<Tour>();
+                foreach (var tour in allTours)
+                {
+                    if (bookmarks.Any(x => x.Tour == tour))
+                    {
+                        bookmarkedTours.Add(tour);
+                    }
+                }
+                ViewData["BookmarkedTours"] = bookmarkedTours;
+
+                //var filteredResultNew = allTours.Where(n => string.Equals(n.Name, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
                 return View("Index", filteredResultNew);
             }
 
             return View("Index", allTours);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> SortByPrice()
+        {
+            var allTours = await _service.GetAllAsync(n => n.TravelAgency);
+
+                //var filteredResult = allTours.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+
+
+            var filteredResultNew = allTours.OrderBy(x => x.Price).ToList();
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var bookmarks = await _bookmarksService.GetUserBookmarksAsync(userId);
+
+            var bookmarkedTours = new List<Tour>();
+            foreach (var tour in allTours)
+            {
+                if (bookmarks.Any(x => x.Tour == tour))
+                {
+                    bookmarkedTours.Add(tour);
+                }
+            }
+            ViewData["BookmarkedTours"] = bookmarkedTours;
+
+            return View("Index", filteredResultNew);
         }
 
         //GET: Tours/Details/1
@@ -76,7 +129,13 @@ namespace eTickets.Controllers
         public async Task<IActionResult> Create()
         {
             var tourDropdownsData = await _service.GetNewTourDropdownsValues();
-
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            if (userRole == UserRoles.Manager)
+            {
+                var travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+                tourDropdownsData.TravelAgencies.RemoveAll(x => x.Id != travelAgencyId);
+            }
             ViewBag.TravelAgencies = new SelectList(tourDropdownsData.TravelAgencies, "Id", "Name");
             ViewBag.Countries = new SelectList(tourDropdownsData.Countries, "Id", "CountryName");
 
@@ -89,7 +148,13 @@ namespace eTickets.Controllers
             if (!ModelState.IsValid)
             {
                 var tourDropdownsData = await _service.GetNewTourDropdownsValues();
-
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                string userRole = User.FindFirstValue(ClaimTypes.Role);
+                if (userRole == UserRoles.Manager)
+                {
+                    var travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+                    tourDropdownsData.TravelAgencies.RemoveAll(x => x.Id != travelAgencyId);
+                }
                 ViewBag.TravelAgencies = new SelectList(tourDropdownsData.TravelAgencies, "Id", "Name");
                 ViewBag.Countries = new SelectList(tourDropdownsData.Countries, "Id", "CountryName");
 
@@ -107,6 +172,9 @@ namespace eTickets.Controllers
             var tourDetails = await _service.GetTourByIdAsync(id);
             if (tourDetails == null) return View("NotFound");
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+
             var response = new NewTourVM()
             {
                 Id = tourDetails.Id,
@@ -122,6 +190,11 @@ namespace eTickets.Controllers
             };
 
             var tourDropdownsData = await _service.GetNewTourDropdownsValues();
+            if (userRole == UserRoles.Manager)
+            {
+                var travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+                tourDropdownsData.TravelAgencies.RemoveAll(x => x.Id != travelAgencyId);
+            }
             ViewBag.TravelAgencies = new SelectList(tourDropdownsData.TravelAgencies, "Id", "Name");
             ViewBag.Countries = new SelectList(tourDropdownsData.Countries, "Id", "CountryName");
 
@@ -136,7 +209,13 @@ namespace eTickets.Controllers
             if (!ModelState.IsValid)
             {
                 var tourDropdownsData = await _service.GetNewTourDropdownsValues();
-
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                string userRole = User.FindFirstValue(ClaimTypes.Role);
+                if (userRole == UserRoles.Manager)
+                {
+                    var travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+                    tourDropdownsData.TravelAgencies.RemoveAll(x => x.Id != travelAgencyId);
+                }
                 ViewBag.TravelAgencies = new SelectList(tourDropdownsData.TravelAgencies, "Id", "Name");
                 ViewBag.Countries = new SelectList(tourDropdownsData.Countries, "Id", "CountryName");
 

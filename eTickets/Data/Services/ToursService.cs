@@ -1,9 +1,11 @@
 ﻿using eTickets.Data.Base;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,19 +14,26 @@ namespace eTickets.Data.Services
     public class ToursService : EntityBaseRepository<Tour>, IToursService
     {
         private readonly AppDbContext _context;
-        public ToursService(AppDbContext context) : base(context)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public ToursService(AppDbContext context, IWebHostEnvironment hostEnvironment) : base(context)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         public async Task AddNewTourAsync(NewTourVM data)
         {
+            string imagePath = "/Files/" + data.Image.FileName;
+            using (var fileStream = new FileStream(_hostEnvironment.WebRootPath + imagePath, FileMode.Create))
+            {
+                await data.Image.CopyToAsync(fileStream);
+            }
             var newTour = new Tour()
             {
                 Name = data.Name,
                 Description = data.Description,
                 Price = data.Price,
-                ImageURL = data.ImageURL,
+                ImageURL = imagePath,
                 TravelAgencyId = data.TravelAgencyId,
                 StartDate = data.StartDate,
                 EndDate = data.EndDate,
@@ -70,17 +79,30 @@ namespace eTickets.Data.Services
         public async Task UpdateTourAsync(NewTourVM data)
         {
             var dbTour = await _context.Tours.FirstOrDefaultAsync(n => n.Id == data.Id);
-
-            if(dbTour != null)
+            string imagePath = "";
+            if(data.Image != null)
+            {
+                imagePath = "/Files/" + data.Image.FileName;
+                using (var fileStream = new FileStream(_hostEnvironment.WebRootPath + imagePath, FileMode.Create))
+                {
+                    await data.Image.CopyToAsync(fileStream);
+                }
+            }
+            if (dbTour != null)
             {
                 dbTour.Name = data.Name;
                 dbTour.Description = data.Description;
                 dbTour.Price = data.Price;
-                dbTour.ImageURL = data.ImageURL;
                 dbTour.TravelAgencyId = data.TravelAgencyId;
                 dbTour.StartDate = data.StartDate;
                 dbTour.EndDate = data.EndDate;
                 dbTour.TourCategory = data.TourCategory;
+
+                if(!string.IsNullOrEmpty(imagePath))
+                {
+                    dbTour.ImageURL = imagePath;
+                }
+
                 await _context.SaveChangesAsync();
             }
 

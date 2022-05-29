@@ -12,12 +12,7 @@
         <div class="row">
             <div class="col-md-8 offset-2">
                     <div class="form-group text-center">
-                        <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CountryPictureURL" class="control-label"></label>
-                        <input asp-for="CountryPictureURL" class="form-control" readonly />
-                        <span asp-validation-for="CountryPictureURL" class="text-danger"></span>
+                        <img class="border-info rounded-circle" style="max-width: 150px" id="CountryPicturePreview" />
                     </div>
                     <div class="form-group">
                         <label asp-for="CountryName" class="control-label"></label>
@@ -43,10 +38,4 @@
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            var output = document.getElementById('ProfilePicturePreview');
-            output.src = $("#ProfilePictureURL").val();
-        })
-    </script>
 }

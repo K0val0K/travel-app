@@ -8,27 +8,46 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Roles = "Admin, Manager")]
     public class TravelAgenciesController : Controller
     {
         private readonly ITravelAgenciesService _travelAgencyService;
         private readonly IBookmarksService _bookmarksService;
+        private readonly ITravelManagerService _travelManagerService;
 
-        public TravelAgenciesController(ITravelAgenciesService service, IBookmarksService bookmarksService)
+        public TravelAgenciesController(ITravelAgenciesService service, IBookmarksService bookmarksService, ITravelManagerService travelManagerService)
         {
             _travelAgencyService = service;
             _bookmarksService = bookmarksService;
+            _travelManagerService = travelManagerService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var allTravelAgencies = await _travelAgencyService.GetAllAsync();
-            return View(allTravelAgencies);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            var travelAgencyId = 0;
+            if(userRole == UserRoles.Manager)
+            {
+                travelAgencyId = await _travelManagerService.GetTravelAgencyIdByManagerUserId(userId);
+            }
+
+            if (travelAgencyId != 0)
+            {
+                var allTravelAgencies = new List<TravelAgency>();
+                allTravelAgencies.Add(await _travelAgencyService.GetByIdAsync(travelAgencyId));
+                return View(allTravelAgencies.AsEnumerable());
+            } 
+            else
+            {
+                return View(await _travelAgencyService.GetAllAsync());
+            }
         }
 
 

@@ -74,7 +74,7 @@
                                 }
                         </p>
                     </td>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))
                     {
                         <td class="align-middle">@order.User.FullName (@order.ContactEmail)</td>
                     }
@@ -86,7 +86,7 @@
                                     {
                                         case OrderStatus.Pending:
                                             
-                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))
                                             {
                                                 <a class="btn btn-outline-primary align-middle" asp-action="Confirm" asp-route-id="@order.Id">Confirm</a>
                                                 <a class="btn btn-danger align-middle" asp-action="Reject" asp-route-id="@order.Id">Reject</a>
@@ -97,7 +97,7 @@
                                             }
                                             break;
                                         case OrderStatus.Confirmed:
-                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))
                                             {
                                                 <a class="btn btn-danger align-middle" asp-action="Reject" asp-route-id="@order.Id">Reject</a>
                                             }

@@ -13,7 +13,7 @@
 
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Create">
+                <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row">
@@ -39,9 +39,10 @@
                                 <span asp-validation-for="Price" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="ImageURL" class="control-label"></label>
+                                @*<label asp-for="ImageURL" class="control-label"></label>
                                 <input asp-for="ImageURL" class="form-control" />
-                                <span asp-validation-for="ImageURL" class="text-danger"></span>
+                                <span asp-validation-for="ImageURL" class="text-danger"></span>*@
+                                <input type="file" asp-for="Image"/>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -71,7 +72,7 @@
                     </div>
 
                     <div class="col-md-4 offset-4 text-center">
-                        <img width="100%" id="ImageUrlPreview" />
+                       @* <img width="100%" id="ImageUrlPreview" />*@
                     </div>
 
                     <div class="form-group">

@@ -1,0 +1,30 @@
+﻿@using eTickets.Data.ViewModels
+@model UserVM
+
+@{
+    ViewData["Title"] = "List of all users";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h4>Add travel manager to company</h4>
+        </p>
+                    <p>@Html.DisplayNameFor(model => model.FullName)</p>
+                    <p>@Html.DisplayNameFor(model => model.UserName)</p>
+                    <p>@Html.DisplayNameFor(model => model.Email)</p>
+         <form asp-action="AddManager">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <label asp-for="TravelAgencyId" class="control-label"></label>
+            <select asp-for="TravelAgencyId" class="form-control" asp-items="ViewBag.TravelAgencies"></select>
+            <span asp-validation-for="TravelAgencyId" class="text-danger"></span>
+
+            <div class="form-group">
+                        <input type="submit" value="AddManager" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Users">Go Back</a>
+            </div>
+        </form>
+
+    </div>
+</div>

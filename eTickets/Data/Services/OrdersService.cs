@@ -21,9 +21,15 @@ namespace eTickets.Data.Services
         {
             var orders = await _context.Orders.Include(n => n.OrderHistoryItems).Include(n => n.Tour).Include(n => n.User).ToListAsync();
 
-            if(userRole != "Admin")
+            if(userRole == "User")
             {
                 orders = orders.Where(n => n.UserId == userId).ToList();
+            }
+
+            if(userRole == "Manager")
+            {
+                var managerAgency = _context.AgencyManagers.FirstOrDefault(n => n.UserId == userId).TravelAgencyId;
+                orders = orders.Where(n => n.Tour.TravelAgencyId == managerAgency).ToList();
             }
 
             return orders;

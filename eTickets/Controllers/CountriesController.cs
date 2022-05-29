@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Roles = "Admin, Manager")]
     public class CountriesController : Controller
     {
         private readonly ICountriesService _service;
@@ -35,7 +35,7 @@ namespace eTickets.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("FullName,CountryPictureURL,Description")]Country country)
+        public async Task<IActionResult> Create([Bind("CountryName,CountryPictureURL,Description")]Country country)
         {
             if (!ModelState.IsValid)
             {

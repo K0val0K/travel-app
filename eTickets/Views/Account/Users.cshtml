@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@using eTickets.Data.ViewModels
+@model IEnumerable<UserVM>
 
 @{
     ViewData["Title"] = "List of all users";
@@ -16,10 +17,11 @@
                     <th>@Html.DisplayNameFor(model => model.FullName)</th>
                     <th>@Html.DisplayNameFor(model => model.UserName)</th>
                     <th>@Html.DisplayNameFor(model => model.Email)</th>
-                    <th>User management</th>
+                    <th>@Html.DisplayNameFor(model => model.Role)</th>
+                    <th>Role management</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 @foreach (var item in Model)
                 {
                 <tr>
@@ -33,7 +35,22 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-
+                        @Html.DisplayFor(modelItem => item.Role) 
+                            @if(item.TravelAgency != null)
+                            {
+                                <span>(@Html.DisplayFor(modelItem => item.TravelAgency))</span>
+                            }
+                        </td>
+                    <td>
+                            @if(item.Role == "User")
+                            {
+                                <a class="btn btn-danger align-middle" asp-action="AddManager" asp-route-id="@item.Id">Add Manager</a>
+                            } 
+                            else if(item.Role == "Manager")
+                            {
+                                <a class="btn btn-danger align-middle" asp-action="RemoveManager" asp-route-id="@item.Id">Remove Manager</a>
+                            }
+                           
                     </td>
                 </tr>
                 }

@@ -10,7 +10,7 @@ using eTickets.Data;
 namespace eTickets.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220508144401_Init")]
+    [Migration("20220509151133_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,6 +150,28 @@ namespace eTickets.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("eTickets.Models.AgencyManager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("TravelAgencyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TravelAgencyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AgencyManagers");
                 });
 
             modelBuilder.Entity("eTickets.Models.ApplicationUser", b =>
@@ -452,6 +474,23 @@ namespace eTickets.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("eTickets.Models.AgencyManager", b =>
+                {
+                    b.HasOne("eTickets.Models.TravelAgency", "TravelAgency")
+                        .WithMany("AgencyManagers")
+                        .HasForeignKey("TravelAgencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eTickets.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("TravelAgency");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("eTickets.Models.Country_Tour", b =>
                 {
                     b.HasOne("eTickets.Models.Country", "Country")
@@ -542,6 +581,8 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.TravelAgency", b =>
                 {
+                    b.Navigation("AgencyManagers");
+
                     b.Navigation("Tours");
                 });
 #pragma warning restore 612, 618

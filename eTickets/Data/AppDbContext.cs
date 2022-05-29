@@ -40,5 +40,7 @@ namespace eTickets.Data
         public DbSet<OrderHistoryItem> OrderHistoryItems { get; set; }
 
         public DbSet<UserTourBookmark> Bookmarks { get; set; }
+
+        public DbSet<AgencyManager> AgencyManagers { get; set; }
     }
 }

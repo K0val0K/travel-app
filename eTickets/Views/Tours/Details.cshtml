@@ -18,7 +18,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
+                   @* <img src="@Model.ImageURL" width="100%" alt="@Model.Name">*@
+                   <img src="@Url.Content(@Model.ImageURL)" width="100%" height="100%">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -72,7 +73,7 @@
                             </a>
                             <a class="btn btn-success text-white  @((DateTime.Now > Model.EndDate) ? "disabled" : "")" 
                                asp-controller="Orders" 
-                               asp-action="Create" asp-route-tourId="@Model.Id"><i class="bi bi-cart-plus"></i> Book now(Price @Model.Price.ToString("c"))</a>
+                               asp-action="Create" asp-route-tourId="@Model.Id"><i class="bi bi-cart-plus"></i> Book now(Price @Model.Price $)</a>
                         </p>
                     </div>
                 </div>

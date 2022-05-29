@@ -48,10 +48,10 @@
 
         $(document).ready(function () {
             var output = document.getElementById('ProfilePicturePreview');
-            output.src = $("#ProfilePictureURL").val();
+            output.src = $("#CountryPictureURL").val();
         })
 
-        $("#ProfilePictureURL").on("change", function () {
+        $("#CountryPictureURL").on("change", function () {
             var output = document.getElementById('ProfilePicturePreview');
             output.src = $(this).val();
         })

@@ -184,6 +184,32 @@ namespace eTickets.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AgencyManagers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TravelAgencyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgencyManagers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AgencyManagers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AgencyManagers_TravelAgencies_TravelAgencyId",
+                        column: x => x.TravelAgencyId,
+                        principalTable: "TravelAgencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tours",
                 columns: table => new
                 {
@@ -311,6 +337,16 @@ namespace eTickets.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AgencyManagers_TravelAgencyId",
+                table: "AgencyManagers",
+                column: "TravelAgencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AgencyManagers_UserId",
+                table: "AgencyManagers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -387,6 +423,9 @@ namespace eTickets.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AgencyManagers");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

@@ -39,6 +39,7 @@ namespace eTickets
             services.AddScoped<ITravelAgenciesService, TravelAgenciesService>();
             services.AddScoped<IToursService, ToursService>();
             services.AddScoped<IOrdersService, OrdersService>();
+            services.AddScoped<ITravelManagerService, TravelManagerService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IBookmarksService, BookmarksService>();
@@ -88,8 +89,8 @@ namespace eTickets
             });
 
             //Seed database
-            AppDbInitializer.Seed(app);
-            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
+            //AppDbInitializer.Seed(app);
+            //AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }

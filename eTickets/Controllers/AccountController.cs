@@ -2,12 +2,15 @@
 using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eTickets.Controllers
@@ -25,11 +28,94 @@ namespace eTickets.Controllers
             _context = context;
         }
 
-
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Users()
         {
             var users = await _context.Users.ToListAsync();
-            return View(users);
+            var usersWithRoles = new List<UserVM>();
+            var travelManagers = await _context.AgencyManagers.Include(n => n.TravelAgency).ToListAsync();
+            foreach (var user in users)
+            {
+                var userVm = new UserVM()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                };
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+                if (userRoles.FirstOrDefault() == UserRoles.Manager)
+                {
+                    userVm.Role = UserRoles.Manager;
+                    userVm.TravelAgency = travelManagers.Where(n => n.UserId == user.Id).FirstOrDefault().TravelAgency.Name;
+                    //userVm.TravelAgencyId = travelManagers.Where(n => n.UserId == user.Id).FirstOrDefault().TravelAgency.Id;
+                }
+                else if (userRoles.FirstOrDefault() == UserRoles.Admin)
+                {
+                    userVm.Role = UserRoles.Admin;
+                }
+                else
+                {
+                    userVm.Role = UserRoles.User;
+                }
+
+                usersWithRoles.Add(userVm);
+            }
+
+            return View(usersWithRoles);
+        }
+
+        public async Task<IActionResult> AddManager(string id)
+        {
+            var users = await _context.Users.ToListAsync();
+            var user = users.FirstOrDefault(n => n.Id == id);
+            ViewBag.TravelAgencies = new SelectList(_context.TravelAgencies, "Id", "Name");
+
+            return View(new UserVM()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                UserName = user.UserName,
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddManager(UserVM userVm)
+        {
+            var dBUser = _context.Users.FirstOrDefault(n => n.Id == userVm.Id);
+            await _userManager.AddToRoleAsync(dBUser, UserRoles.Manager);
+            await _userManager.RemoveFromRoleAsync(dBUser, UserRoles.User);
+
+            _context.AgencyManagers.Add(new AgencyManager()
+            {
+                TravelAgencyId = userVm.TravelAgencyId,
+                UserId = userVm.Id,
+            });
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Users");
+        }
+
+        public async Task<IActionResult> RemoveManager(string id)
+        {
+            var dBUser = _context.Users.FirstOrDefault(n => n.Id == id);
+            if (dBUser.Id != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                await _userManager.AddToRoleAsync(dBUser, UserRoles.User);
+                await _userManager.RemoveFromRoleAsync(dBUser, UserRoles.Manager);
+
+                var manager = _context.AgencyManagers.FirstOrDefault(x => x.UserId == id);
+                if (manager != null)
+                {
+                    _context.AgencyManagers.Remove(manager);
+                }
+
+                await _context.SaveChangesAsync();    
+            }
+            return RedirectToAction("Users");
         }
 
 
@@ -83,9 +169,13 @@ namespace eTickets.Controllers
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
-            if (newUserResponse.Succeeded)
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+            if (!newUserResponse.Succeeded)
+            {
+                TempData["Error"] = "Password is not strong";
+                return View(registerVM);
+            }
 
+            await _userManager.AddToRoleAsync(newUser, UserRoles.User);
             return View("RegisterCompleted");
         }
 

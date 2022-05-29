@@ -26,5 +26,7 @@ namespace eTickets.Models
 
         //Relationships
         public List<Tour> Tours { get; set; }
+
+        public List<AgencyManager> AgencyManagers { get; set; }
     }
 }
